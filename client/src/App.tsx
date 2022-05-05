@@ -8,6 +8,7 @@ import AddAuthor from "./pages/AddAuthor";
 import UserProfile from "./pages/UserProfile";
 import UserInfo from "./pages/UserInfo";
 import AddUser from "./pages/AddUser";
+import BookDetails from "./pages/BookDetails";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/user_profile" element={<UserProfile />} />
         <Route path="/add_author" element={<AddAuthor />} />
         <Route path="/add_user" element={<AddUser />} />
+        <Route path="/books/:bookId" element={<BookDetails />} />
       </Routes>
     </BrowserRouter>
   );

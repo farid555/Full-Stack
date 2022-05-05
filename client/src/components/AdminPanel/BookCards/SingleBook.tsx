@@ -17,29 +17,35 @@ interface IAuthor {
 }
 
 const SingleBook = ({ title, author }: BookInfo["Book"]) => {
-  const [flag, setFlag] = useState(false);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
 
   useEffect(() => {
+    let didCancel = false;
     const getAuthorName = async () => {
-      let authorInfo: IAuthor[] = [];
-      author.map(async (obj) => {
-        const res: AxiosResponse<IAuthor> = await api.get(
-          `/api/v1/authors/${obj}`, //getting single author by id
-        );
-        const data: IAuthor = res.data;
-        authorInfo.push(data);
-      });
-      setAuthors(authorInfo);
+      if (!didCancel) {
+        try {
+          author.forEach(async (obj) => {
+            const res: AxiosResponse<IAuthor> = await api.get(
+              `api/v1/authors/${obj}`,
+            );
+            const data: IAuthor = res.data;
+            setAuthors((prev) => [...prev, data]);
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      }
     };
     getAuthorName();
-    setFlag(true);
+    return () => {
+      didCancel = true;
+    };
   }, [author]);
 
   console.log(authors);
   return (
     <>
-      {flag && (
+      {authors.length > 0 && (
         <div className="z-0 relative bg-gray-400 flex flex-col items-center justify-center rounded-lg pt-8 pb-4">
           <div className="absolute top-2 right-2">
             <RiDeleteBin5Line className="h-8 w-8 text-red-300" />
@@ -49,7 +55,12 @@ const SingleBook = ({ title, author }: BookInfo["Book"]) => {
           </div>
           <div>
             <p className="text-black text-xl mt-2 text-center">{title}</p>
-            {authors && authors.map((val) => <p>{val.firstName}, </p>)}
+          </div>
+          <div>
+            <p>
+              {authors && `${authors[0].firstName} ${authors[0].lastName}`}
+              {authors.length > 1 ? "..." : ""}
+            </p>
           </div>
         </div>
       )}
