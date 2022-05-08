@@ -49,7 +49,11 @@ const BookDetailsCard = ({ bookId }: IId) => {
         const res: AxiosResponse<IAuthor> = await api.get(
           `api/v1/authors/${obj}`,
         );
+        console.log("res:", res);
+
         const data: IAuthor = res.data;
+        console.log("data", data);
+
         setAuthors((prev) => [...prev, data]);
       });
     } catch (err) {

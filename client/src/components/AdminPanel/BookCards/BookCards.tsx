@@ -9,6 +9,7 @@ interface IBook {
   _id: string;
   title: string;
   author: string[];
+  image: string;
 }
 
 const BookCards = () => {
@@ -51,7 +52,11 @@ const BookCards = () => {
         {books &&
           books.map((book: IBook) => (
             <Link to={`/books/${book._id}`} key={book._id}>
-              <SingleBook title={book.title} author={book.author} />
+              <SingleBook
+                image={book.image}
+                title={book.title}
+                author={book.author}
+              />
             </Link>
           ))}
       </div>

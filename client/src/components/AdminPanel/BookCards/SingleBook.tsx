@@ -7,6 +7,7 @@ interface BookInfo {
   Book: {
     title: string;
     author: string[];
+    image: string;
   };
 }
 
@@ -16,7 +17,7 @@ interface IAuthor {
   lastName: string;
 }
 
-const SingleBook = ({ title, author }: BookInfo["Book"]) => {
+const SingleBook = ({ title, author, image }: BookInfo["Book"]) => {
   const [authors, setAuthors] = useState<IAuthor[]>([]);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ const SingleBook = ({ title, author }: BookInfo["Book"]) => {
             <RiDeleteBin5Line className="h-8 w-8 text-red-300" />
           </div>
           <div>
-            <img className="h-32 w-32 mb-2" src="img/book.png" alt="book" />
+            <img className="h-48 w-48 mb-2" src={image} alt="book" />
           </div>
           <div>
             <p className="text-black text-xl mt-2 text-center">{title}</p>

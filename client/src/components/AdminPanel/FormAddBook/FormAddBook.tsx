@@ -33,10 +33,12 @@ const FormAddBook = () => {
 
   useEffect(() => {
     const getAuthors = async () => {
-      const res: AxiosResponse<IAuthor[]> = await api.get("api/v1/authors");
+      const res: AxiosResponse<IAuthor[]> = await api.get("api/v1/authors"); //getting group of authors's firstName, lastName, _id,
       const data: IAuthor[] = res.data;
-      console.log(data);
+
       data.forEach((author) => {
+        // author is a single authorInfo firstName, lastName, _id
+
         setAuthorOptions((prev) => [
           ...prev,
           {
@@ -49,11 +51,16 @@ const FormAddBook = () => {
     getAuthors();
   }, []);
 
+  console.log("authorOptions", authorOptions);
+
   const placeholders = ["Title", "Publish Year", "Pages", "Rating", "Quantity"];
   const genreOptions: Option[] = [
     { value: "horror", label: "Horror" },
     { value: "sci-fi", label: "Sci-fi" },
     { value: "history", label: "History" },
+    { value: "economist", label: "Economist" },
+    { value: "life-style", label: "Life-style" },
+    { value: "psychological self-help", label: "Psychological Self-Help" },
   ];
 
   const getBase64 = (file: File): Promise<string> => {

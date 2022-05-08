@@ -94,3 +94,39 @@ export const findAll = async (
     }
   }
 }
+
+
+export const loginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email } = req.body
+
+    if(!email) {
+      res.status(400)
+      throw new BadRequestError('Invalid Request')
+    }
+
+    const user = await UserService.findByEmail(email)
+
+    if(user) {
+      res.json({
+        _id: user._id,
+        email: user.email,
+        token: await UserService.generateToken(user._id)
+      })
+    } else {
+      res.status(400)
+      throw new BadRequestError('Invalid Request')
+    }
+
+  } catch (error) {
+    if (error instanceof Error && error.name == 'ValidationError') {
+      next(new BadRequestError('Invalid Request', error))
+    } else {
+      next(error)
+    }
+  }
+}

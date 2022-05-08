@@ -1,5 +1,7 @@
 import User, { UserDocument } from '../models/User'
 import { NotFoundError } from '../helpers/apiError'
+import jwt from "jsonwebtoken"
+import { JWT_SECRET } from "../util/secrets"
 
 const create = async (user: UserDocument): Promise<UserDocument> => {
   return user.save()
@@ -44,10 +46,29 @@ const deleteUser = async (userId: string): Promise<UserDocument | null> => {
   return foundUser
 }
 
+const findByEmail = async (email : string) : Promise<UserDocument | null> => {
+  const foundUser = await User.findOne({email})
+
+  if(!foundUser) {
+    throw new NotFoundError(`User with this email - ${email} is not registered`)
+  }
+
+  return foundUser
+
+}
+
+const generateToken = async (userId: string) => {
+  return jwt.sign({userId}, JWT_SECRET, {
+    expiresIn: '30d',
+  })
+}
+
 export default {
   create,
   findById,
   findAll,
   update,
   deleteUser,
+  findByEmail,
+  generateToken,
 }
