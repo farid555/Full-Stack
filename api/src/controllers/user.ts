@@ -32,14 +32,15 @@ export const updateUser = async (
   try {
     const update = req.body
     const userId = req.params.userId
+
     const updatedUser = await UserService.update(userId, update)
     res.json(updatedUser)
   } catch (error) {
-    if (error instanceof Error && error.name == 'ValidationError') {
-      next(new BadRequestError('Invalid Request', error))
-    } else {
-      next(error)
-    }
+    res.status(500).json({
+      message: 'Update Failed',
+      error: error,
+    })
+    console.log(error)
   }
 }
 
@@ -95,7 +96,6 @@ export const findAll = async (
   }
 }
 
-
 export const loginUser = async (
   req: Request,
   res: Response,
@@ -104,24 +104,23 @@ export const loginUser = async (
   try {
     const { email } = req.body
 
-    if(!email) {
+    if (!email) {
       res.status(400)
       throw new BadRequestError('Invalid Request')
     }
 
     const user = await UserService.findByEmail(email)
 
-    if(user) {
+    if (user) {
       res.json({
         _id: user._id,
         email: user.email,
-        token: await UserService.generateToken(user._id)
+        token: await UserService.generateToken(user._id),
       })
     } else {
       res.status(400)
       throw new BadRequestError('Invalid Request')
     }
-
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))

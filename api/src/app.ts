@@ -1,6 +1,6 @@
 import express from 'express'
-import lusca from 'lusca'
 import dotenv from 'dotenv'
+import passport from 'passport' 
 
 import movieRouter from './routers/movie'
 import usersRouter from './routers/user'
@@ -9,6 +9,7 @@ import authorsRouter from './routers/author'
 import apiErrorHandler from './middlewares/apiErrorHandler'
 import apiContentType from './middlewares/apiContentType'
 import cors from 'cors'
+//import { googleStrategy } from './config/passport'
 
 dotenv.config({ path: '.env' })
 const app = express()
@@ -22,6 +23,10 @@ app.set('port', process.env.PORT || 5002)
 // Global middleware
 app.use(apiContentType)
 app.use(express.json({limit: '50mb'}))
+
+//passport configuration
+app.use(passport.initialize())
+//passport.use(googleStrategy);
 
 // Set up routers
 app.use('/api/v1/movies', movieRouter)

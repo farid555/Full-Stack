@@ -5,7 +5,7 @@ const BorrowedBook = () => {
   return (
     <div className="bg-green-300 rounded-md shadow px-6 py-4 w-full flex my-4">
       <div className="w-1/4">
-        <BookCard title={"Book Name"} />
+        <BookCard title={"Book Name"} image={"img/book.png"} />
       </div>
       <div className="w-2/4 flex flex-col justify-end">
         <p>Title:</p>

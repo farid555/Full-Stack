@@ -4,7 +4,20 @@ import api from "../../../api";
 import { AxiosResponse } from "axios";
 // import { Navigate } from "react-router-dom";
 import AddedBook from "../AddedBook/AddedBook";
+import { useAppSelector } from "../../../hooks/useRedux";
 
+interface IState {
+  user: IUser | null;
+  isError: boolean;
+  isSuccess: boolean;
+  isLoading: boolean;
+  message: string;
+}
+interface IUser {
+  _id: string;
+  email: string;
+  token: string;
+}
 interface IAuthor {
   _id: string;
   firstName: string;
@@ -30,6 +43,8 @@ const FormAddBook = () => {
     [],
   );
   const [bookAdded, setBookAdded] = useState<boolean>(false);
+
+  const { user }: IState = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     const getAuthors = async () => {
@@ -110,7 +125,11 @@ const FormAddBook = () => {
         rating,
         author: selectedAuthorId.map((id) => id.value),
       };
-      const res = await api.post("api/v1/books", newBook);
+      const res = await api.post("api/v1/books", newBook, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
       console.log(res);
 
       setBookAdded(true);

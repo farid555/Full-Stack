@@ -14,10 +14,9 @@ if (fs.existsSync('.env')) {
 export const ENVIRONMENT = process.env.NODE_ENV
 const prod = ENVIRONMENT === 'production' // Anything else is treated as 'dev'
 
+export const GOOGLE_CLIENT_ID = process.env['GOOGLE_CLIENT_ID']
 export const JWT_SECRET = process.env['JWT_SECRET'] as string
-export const MONGODB_URI = (
-  prod ? process.env['MONGODB_URI'] : process.env['MONGODB_URI_LOCAL']
-) as string
+export const MONGODB_URI = "mongodb+srv://farid:farid123@cluster0.ovpap.mongodb.net/bookStore?retryWrites=true&w=majority"
 
 if (!JWT_SECRET) {
   logger.error('No client secret. Set JWT_SECRET environment variable.')

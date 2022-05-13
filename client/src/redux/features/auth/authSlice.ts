@@ -5,6 +5,12 @@ interface IUserGoogleData {
     email: string
 }
 
+interface IUser {
+    _id: string;
+    email: string;
+    token: string;
+}
+
 export const login = createAsyncThunk("auth/login", async (user: IUserGoogleData, thunkAPI) => {
     try {
         return await authService.login(user)
@@ -17,7 +23,7 @@ export const logout =   createAsyncThunk("auth/logout", async () => {
     await authService.logout();
 })
 
-const user = localStorage.getItem("user")
+const user:IUser = JSON.parse(String(localStorage.getItem("user")))
 
 const initialState = {
     user: user ? user : null,

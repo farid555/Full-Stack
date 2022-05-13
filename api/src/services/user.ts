@@ -46,6 +46,8 @@ const deleteUser = async (userId: string): Promise<UserDocument | null> => {
   return foundUser
 }
 
+
+
 const findByEmail = async (email : string) : Promise<UserDocument | null> => {
   const foundUser = await User.findOne({email})
 

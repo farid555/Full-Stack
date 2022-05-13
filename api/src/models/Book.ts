@@ -32,14 +32,14 @@ const bookSchema = new mongoose.Schema({
     type: Number,
     min: 1,
   },
-  quantity: {     
+  quantity: {
     type: Number,
     required: true,
     min: 1,
   },
   image: {
     type: String,
-    required: false,
+    required: true,
   },
   author: [{ type: mongoose.Types.ObjectId, ref: 'Author' }],
   userBorrowBook: [{ type: mongoose.Types.ObjectId, ref: 'User' }],

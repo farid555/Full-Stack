@@ -47,7 +47,7 @@ const LoginForm = () => {
           buttonText="Login with Google"
           onSuccess={handleLogin}
           onFailure={(res) => {
-            console.log(res);
+            console.log("res", res);
           }}
           cookiePolicy={"single_host_origin"}
         />
