@@ -9,6 +9,7 @@ export type UserDocument = Document & {
   address: string
   gender: string
   image: string
+  password: string
   borrowBook: {
     bookId: string
     getBorrow: Date

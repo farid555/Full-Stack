@@ -1,5 +1,6 @@
 import React from "react";
 import { CgProfile } from "react-icons/cg";
+import { Link } from "react-router-dom";
 
 const AdminHero = () => {
   return (
@@ -19,9 +20,11 @@ const AdminHero = () => {
               <button className="rounded-full hover:scale-125 text-xl bg-violet-700 px-6 py-4 hover:bg-violet-600 duration-400 transition-all ease-in-out text-white">
                 Dashboard
               </button>
-              <button className="rounded-full hover:scale-125 text-xl bg-violet-700 px-6 py-4 hover:bg-violet-600 duration-400 transition-all ease-in-out text-white">
-                Book Information
-              </button>
+              <Link to="/book_info">
+                <button className="rounded-full hover:scale-125 text-xl bg-violet-700 px-6 py-4 hover:bg-violet-600 duration-400 transition-all ease-in-out text-white">
+                  Book Information
+                </button>
+              </Link>
               <button className="rounded-full hover:scale-125 text-xl bg-violet-700 px-6 py-4 hover:bg-violet-600 duration-400 transition-all ease-in-out text-white">
                 User Information
               </button>

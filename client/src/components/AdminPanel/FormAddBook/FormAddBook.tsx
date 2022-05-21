@@ -5,6 +5,7 @@ import { AxiosResponse } from "axios";
 // import { Navigate } from "react-router-dom";
 import AddedBook from "../AddedBook/AddedBook";
 import { useAppSelector } from "../../../hooks/useRedux";
+import { Link, useNavigate } from "react-router-dom";
 
 interface IState {
   user: IUser | null;
@@ -40,11 +41,13 @@ const FormAddBook = () => {
   const [quantity, setQuantity] = useState<number>();
   const [image, setImage] = useState<string>("");
   const [selectedAuthorId, setSelectedAuthorId] = useState<readonly Option[]>(
-    [],
+    []
   );
   const [bookAdded, setBookAdded] = useState<boolean>(false);
 
   const { user }: IState = useAppSelector((state) => state.auth);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAuthors = async () => {
@@ -91,7 +94,7 @@ const FormAddBook = () => {
   };
 
   const handleFileInputChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (!e.target.files) return;
     console.log(e.target.value);
@@ -138,23 +141,48 @@ const FormAddBook = () => {
     }
   };
 
+  const handleAddNew = () => {
+    setBookAdded(false);
+    setTitle("");
+    setGenres([]);
+    setImage("");
+    setPages(0);
+    setPublishedYear(0);
+    setQuantity(0);
+    setSelectedAuthorId([]);
+    setRating(0);
+  };
+
   return (
     <div className="w-full bg-green-300 py-20">
       <div className="container mx-auto">
         {bookAdded ? (
-          <AddedBook
-            title={title}
-            genres={genres}
-            image={image}
-            pages={pages}
-            publishedYear={publishedYear}
-            quantity={quantity}
-            rating={rating}
-            author={selectedAuthorId}
-          />
+          <>
+            <div className="my-4 items-center flex justify-center ">
+              <button
+                onClick={handleAddNew}
+                className="py-3 rounded px-4 bg-red-500 text-white"
+              >
+                Add more books
+              </button>
+            </div>
+            <AddedBook
+              title={title}
+              genres={genres}
+              image={image}
+              pages={pages}
+              publishedYear={publishedYear}
+              quantity={quantity}
+              rating={rating}
+              author={selectedAuthorId}
+            />
+          </>
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col justify-center items-center">
+              <div className="w-1/2 my-4">
+                <p className="font-bold italic text-white">Title:</p>
+              </div>
               <input
                 type="text"
                 className="bg-gray-200 text-black text-lg my-4 px-6 py-4 rounded-md outline-none w-1/2"
@@ -162,6 +190,9 @@ const FormAddBook = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
+              <div className="w-1/2 my-4">
+                <p className="font-bold italic text-white">Published year:</p>
+              </div>
               <input
                 type="number"
                 className="bg-gray-200 text-black text-lg my-4 px-6 py-4 rounded-md outline-none w-1/2"
@@ -182,7 +213,9 @@ const FormAddBook = () => {
                   onChange={(option: MultiValue<Option>) => setGenres(option)}
                 />
               </div>
-
+              <div className="w-1/2 my-4">
+                <p className="font-bold italic text-white">Pages:</p>
+              </div>
               <input
                 type="number"
                 className="bg-gray-200 text-black text-lg my-4 px-6 py-4 rounded-md outline-none w-1/2"
@@ -190,6 +223,9 @@ const FormAddBook = () => {
                 value={pages}
                 onChange={(e) => setPages(parseInt(e.target.value))}
               />
+              <div className="w-1/2 my-4">
+                <p className="font-bold italic text-white">Rating:</p>
+              </div>
               <input
                 type="number"
                 className="bg-gray-200 text-black text-lg my-4 px-6 py-4 rounded-md outline-none w-1/2"
@@ -197,6 +233,9 @@ const FormAddBook = () => {
                 value={rating}
                 onChange={(e) => setRating(parseInt(e.target.value))}
               />
+              <div className="w-1/2 my-4">
+                <p className="font-bold italic text-white">Quantity:</p>
+              </div>
               <input
                 type="number"
                 className="bg-gray-200 text-black text-lg my-4 px-6 py-4 rounded-md outline-none w-1/2"
@@ -204,6 +243,9 @@ const FormAddBook = () => {
                 value={quantity}
                 onChange={(e) => setQuantity(parseInt(e.target.value))}
               />
+              <div className="w-1/2 my-4">
+                <p className="font-bold italic text-white">Author:</p>
+              </div>
               <div className="w-1/2 mt-3">
                 <Select
                   placeholder={"Author"}

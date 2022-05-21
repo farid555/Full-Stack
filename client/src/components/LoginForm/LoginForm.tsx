@@ -9,7 +9,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../api";
 import { useAppSelector, useAppDispatch } from "../../hooks/useRedux";
-import { login, reset } from "../../redux/features/auth/authSlice";
+import {
+  login,
+  reset,
+  loginWithPassword,
+} from "../../redux/features/auth/authSlice";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -53,8 +57,7 @@ const LoginForm = () => {
       return;
     }
     try {
-      const res = await api.post("api/v1/users/login", { email });
-      console.log(res.data);
+      dispatch(loginWithPassword({ email, password }));
     } catch (err) {
       console.log(err);
     }

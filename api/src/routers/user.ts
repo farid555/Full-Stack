@@ -13,4 +13,6 @@ router
 
 router.route('/login').post(userController.loginUser)
 
+router.route('/login2').post(userController.loginUserWithPassword)
+
 export default router

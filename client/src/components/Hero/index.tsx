@@ -10,6 +10,7 @@ const Hero = () => {
 
   const handleLogout = async () => {
     await dispatch(logout());
+    window.location.reload();
     //await dispatch(reset);
     //navigate("/login");
   };

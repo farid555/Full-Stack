@@ -132,38 +132,37 @@ export const loginUser = async (
   }
 }
 
-// export const loginUserWithPassword = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const { email, password } = req.body
+export const loginUserWithPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email, password } = req.body
 
-//     if (!email || !password) {
-//       res.status(400)
-//       throw new BadRequestError('Invalid Request')
-//     }
+    if (!email || !password) {
+      res.status(400)
+      throw new BadRequestError('Invalid Request')
+    }
 
-//     const user = await UserService.findByEmail(email)
+    const user = await UserService.findByEmail(email)
 
-//     if (user && await bcrypt.compare(password, user)) {
-
-//       res.json({
-//         _id: user._id,
-//         email: user.email,
-//         token: await UserService.generateToken(user._id),
-//         role: user.role,
-//       })
-//     } else {
-//       res.status(400)
-//       throw new BadRequestError('Invalid Request')
-//     }
-//   } catch (error) {
-//     if (error instanceof Error && error.name == 'ValidationError') {
-//       next(new BadRequestError('Invalid Request', error))
-//     } else {
-//       next(error)
-//     }
-//   }
-// }
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.json({
+        _id: user._id,
+        email: user.email,
+        token: await UserService.generateToken(user._id),
+        role: user.role,
+      })
+    } else {
+      res.status(400)
+      throw new BadRequestError('Invalid Request')
+    }
+  } catch (error) {
+    if (error instanceof Error && error.name == 'ValidationError') {
+      next(new BadRequestError('Invalid Request', error))
+    } else {
+      next(error)
+    }
+  }
+}

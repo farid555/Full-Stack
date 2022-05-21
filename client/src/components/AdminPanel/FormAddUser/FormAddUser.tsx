@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import api from "../../../api";
 import AddedUser from "../AddedUser/AddedUser";
+import bcrypt from "bcryptjs";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-const Addeduser = () => {
+const FormAddUser = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [image, setImage] = useState<string>("");
   const [userAdded, setUserAdded] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,14 +28,19 @@ const Addeduser = () => {
         email,
         phone,
         address,
+        password: await bcrypt.hash(password, 10),
         image,
         role: "user",
       };
       const res = await api.post("api/v1/users", newUser);
       console.log(res);
-      setUserAdded(true);
-    } catch (err) {
+      toast.success("User Added!");
+      navigate("/admin");
+
+      // setUserAdded(true);
+    } catch (err: any) {
       console.error(err);
+      toast.error(err);
     }
   };
 
@@ -46,7 +57,7 @@ const Addeduser = () => {
   };
 
   const handleFileInputChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (!e.target.files) return;
 
@@ -114,6 +125,14 @@ const Addeduser = () => {
               <input
                 type="text"
                 className="bg-gray-200 text-black text-lg my-4 px-6 py-4 rounded-md outline-none w-1/2"
+                placeholder={"Password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              <input
+                type="text"
+                className="bg-gray-200 text-black text-lg my-4 px-6 py-4 rounded-md outline-none w-1/2"
                 placeholder={"Phone"}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -157,4 +176,4 @@ const Addeduser = () => {
   );
 };
 
-export default Addeduser;
+export default FormAddUser;

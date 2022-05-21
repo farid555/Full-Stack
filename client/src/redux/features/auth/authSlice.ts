@@ -5,6 +5,11 @@ interface IUserGoogleData {
     email: string
 }
 
+interface IUserPasswordData {
+    email: string
+    password: string
+}
+
 interface IUser {
     _id: string;
     email: string;
@@ -19,6 +24,15 @@ export const login = createAsyncThunk("auth/login", async (user: IUserGoogleData
         return thunkAPI.rejectWithValue(error)
     }
 })
+
+export const loginWithPassword = createAsyncThunk("auth/login2", async (user: IUserPasswordData, thunkAPI) => {
+    try {
+        return await authService.login(user)
+    } catch(error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
 
 export const logout =   createAsyncThunk("auth/logout", async () => {
     await authService.logout();
@@ -55,6 +69,20 @@ const authSlice = createSlice({
             state.user = action.payload;
         })
         .addCase(login.rejected, (state, action) => {
+            state.isError = true;
+            state.isLoading = false;
+            state.message = String(action.payload);
+            state.user = null;
+        })
+        .addCase(loginWithPassword.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(loginWithPassword.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.user = action.payload;
+        })
+        .addCase(loginWithPassword.rejected, (state, action) => {
             state.isError = true;
             state.isLoading = false;
             state.message = String(action.payload);
