@@ -16,6 +16,8 @@ import "react-toastify/dist/ReactToastify.css";
 import PrivateRouteUser from "./components/ProtectedRoute/PrivateRouteUser";
 import PrivateRouteAdmin from "./components/ProtectedRoute/PrivateRouteAdmin";
 import AddAdmin from "./pages/AddAdmin";
+import Install from "./pages/Install";
+import Error404 from "./pages/Error404";
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/install" element={<Install />} />
           <Route path="/books/:bookId" element={<BookDetails />} />
           <Route path="/book_list" element={<BookList />} />
           <Route path="/login" element={<Login />} />
@@ -36,6 +39,7 @@ function App() {
             <Route path="/user_info" element={<UserInfo />} />
             <Route path="/book_info" element={<BookInfo />} />
           </Route>
+          <Route path="*" element={<Error404 />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />
