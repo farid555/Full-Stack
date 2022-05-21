@@ -13,6 +13,9 @@ import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
 import BookList from "./pages/BookList";
 import "react-toastify/dist/ReactToastify.css";
+import PrivateRouteUser from "./components/ProtectedRoute/PrivateRouteUser";
+import PrivateRouteAdmin from "./components/ProtectedRoute/PrivateRouteAdmin";
+import AddAdmin from "./pages/AddAdmin";
 
 function App() {
   return (
@@ -20,16 +23,19 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/user_info" element={<UserInfo />} />
-          <Route path="/book_info" element={<BookInfo />} />
-          <Route path="/add_book" element={<AddBook />} />
-          <Route path="/user_profile" element={<UserProfile />} />
-          <Route path="/add_author" element={<AddAuthor />} />
-          <Route path="/add_user" element={<AddUser />} />
           <Route path="/books/:bookId" element={<BookDetails />} />
           <Route path="/book_list" element={<BookList />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/user_profile" element={<UserProfile />} />
+          <Route path="/add_admin" element={<AddAdmin />} />
+          <Route element={<PrivateRouteAdmin />}>
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/add_author" element={<AddAuthor />} />
+            <Route path="/add_book" element={<AddBook />} />
+            <Route path="/add_user" element={<AddUser />} />
+            <Route path="/user_info" element={<UserInfo />} />
+            <Route path="/book_info" element={<BookInfo />} />
+          </Route>
         </Routes>
       </BrowserRouter>
       <ToastContainer />

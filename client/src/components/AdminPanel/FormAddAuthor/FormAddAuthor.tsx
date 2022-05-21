@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import api from "../../../api/index";
 
 interface IAuthor {
@@ -14,10 +15,20 @@ const FormAddAuthor = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(newAuthor);
-    const data = await api.post("api/v1/authors", newAuthor);
-    console.log(data);
-  };
+    try {
+      const data = await api.post("api/v1/authors", newAuthor);
+      console.log(data);
+      setNewAuthor({
+        firstName: "",
+        lastName: "",
+      })
+      toast.success("Author added succesfully");
+    } catch(error) {
+      console.log(error);
+      toast.error("Failed!")
+    }
+  }
+    
 
   return (
     <div className="w-full bg-green-300 py-20">

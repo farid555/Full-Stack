@@ -3,6 +3,7 @@ import mongoose, { Date, Document } from 'mongoose'
 export type UserDocument = Document & {
   firstName: string
   lastName: string
+  role: string
   email: string
   phone: string
   address: string
@@ -33,6 +34,13 @@ const bookSchema = new mongoose.Schema({
   phone: {
     type: String,
     required: true,
+  },
+  role: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
   },
   address: {
     type: String,

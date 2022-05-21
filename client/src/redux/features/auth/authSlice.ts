@@ -9,6 +9,7 @@ interface IUser {
     _id: string;
     email: string;
     token: string;
+    role: string;
 }
 
 export const login = createAsyncThunk("auth/login", async (user: IUserGoogleData, thunkAPI) => {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import api from "../../../api";
 import AddedUser from "../AddedUser/AddedUser";
 
-const Addeduser = () => {
+const FormAddAdmin = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [gender, setGender] = useState<string>("");
@@ -23,7 +23,7 @@ const Addeduser = () => {
         phone,
         address,
         image,
-        role: "user",
+        role: "admin",
       };
       const res = await api.post("api/v1/users", newUser);
       console.log(res);
@@ -157,4 +157,5 @@ const Addeduser = () => {
   );
 };
 
-export default Addeduser;
+
+export default FormAddAdmin;

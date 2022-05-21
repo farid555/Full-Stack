@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import User from '../models/User'
 import UserService from '../services/user'
 import { BadRequestError } from '../helpers/apiError'
+import bcrypt from 'bcrypt'
 
 // POST /users
 export const createUser = async (
@@ -116,6 +117,7 @@ export const loginUser = async (
         _id: user._id,
         email: user.email,
         token: await UserService.generateToken(user._id),
+        role: user.role,
       })
     } else {
       res.status(400)
@@ -129,3 +131,39 @@ export const loginUser = async (
     }
   }
 }
+
+// export const loginUserWithPassword = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const { email, password } = req.body
+
+//     if (!email || !password) {
+//       res.status(400)
+//       throw new BadRequestError('Invalid Request')
+//     }
+
+//     const user = await UserService.findByEmail(email)
+
+//     if (user && await bcrypt.compare(password, user)) {
+
+//       res.json({
+//         _id: user._id,
+//         email: user.email,
+//         token: await UserService.generateToken(user._id),
+//         role: user.role,
+//       })
+//     } else {
+//       res.status(400)
+//       throw new BadRequestError('Invalid Request')
+//     }
+//   } catch (error) {
+//     if (error instanceof Error && error.name == 'ValidationError') {
+//       next(new BadRequestError('Invalid Request', error))
+//     } else {
+//       next(error)
+//     }
+//   }
+// }

@@ -105,11 +105,11 @@ const FormAddBook = () => {
     setTitle("");
     setGenres([]);
     setImage("");
-    setPages(undefined);
-    setPublishedYear(undefined);
-    setQuantity(undefined);
+    setPages(0);
+    setPublishedYear(0);
+    setQuantity(0);
     setSelectedAuthorId([]);
-    setRating(undefined);
+    setRating(0);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

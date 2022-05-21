@@ -16,7 +16,7 @@ const prod = ENVIRONMENT === 'production' // Anything else is treated as 'dev'
 
 export const GOOGLE_CLIENT_ID = process.env['GOOGLE_CLIENT_ID']
 export const JWT_SECRET = process.env['JWT_SECRET'] as string
-export const MONGODB_URI = "mongodb+srv://farid:farid123@cluster0.ovpap.mongodb.net/bookStore?retryWrites=true&w=majority"
+export const MONGODB_URI = 'mongodb://127.0.0.1:27017/'
 
 if (!JWT_SECRET) {
   logger.error('No client secret. Set JWT_SECRET environment variable.')
