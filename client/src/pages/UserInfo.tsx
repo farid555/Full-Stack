@@ -6,7 +6,7 @@ import Navbar from "../components/Navbar";
 
 const UserInfo = () => {
   return (
-    <>
+    <div className="relative">
       <header>
         <Navbar />
       </header>
@@ -19,7 +19,7 @@ const UserInfo = () => {
       <footer>
         <Footer />
       </footer>
-    </>
+    </div>
   );
 };
 
