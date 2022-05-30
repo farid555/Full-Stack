@@ -37,7 +37,7 @@ const Usercards = () => {
         <SearchBar2 />
       </div>
       <div className="flex justify-end space-x-2">
-        <Link to="/add_user">
+        <Link to="/admin/add_user">
           <button className="bg-green-600 px-2 py-3 rounded-md text-white text-base">
             Add new user
           </button>

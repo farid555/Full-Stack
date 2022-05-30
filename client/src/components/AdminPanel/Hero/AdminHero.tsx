@@ -25,9 +25,11 @@ const AdminHero = () => {
                   Book Information
                 </button>
               </Link>
-              <button className="rounded-full hover:scale-125 text-xl bg-violet-700 px-6 py-4 hover:bg-violet-600 duration-400 transition-all ease-in-out text-white">
-                User Information
-              </button>
+              <Link to="/user_info">
+                <button className="rounded-full hover:scale-125 text-xl bg-violet-700 px-6 py-4 hover:bg-violet-600 duration-400 transition-all ease-in-out text-white">
+                  User Information
+                </button>
+              </Link>
             </div>
           </div>
           <div className="">

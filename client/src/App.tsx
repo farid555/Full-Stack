@@ -18,6 +18,7 @@ import PrivateRouteAdmin from "./components/ProtectedRoute/PrivateRouteAdmin";
 import AddAdmin from "./pages/AddAdmin";
 import Install from "./pages/Install";
 import Error404 from "./pages/Error404";
+import UpdateUser from "./pages/UpdateUser";
 
 function App() {
   return (
@@ -33,11 +34,12 @@ function App() {
           <Route path="/add_admin" element={<AddAdmin />} />
           <Route element={<PrivateRouteAdmin />}>
             <Route path="/admin" element={<Admin />} />
-            <Route path="/add_author" element={<AddAuthor />} />
+            <Route path="/admin/add_author" element={<AddAuthor />} />
             <Route path="/add_book" element={<AddBook />} />
-            <Route path="/add_user" element={<AddUser />} />
+            <Route path="/admin/add_user" element={<AddUser />} />
             <Route path="/user_info" element={<UserInfo />} />
             <Route path="/book_info" element={<BookInfo />} />
+            <Route path="/edit/user/:userId" element={<UpdateUser />} />
           </Route>
           <Route path="*" element={<Error404 />} />
         </Routes>
