@@ -23,6 +23,7 @@ function Install() {
       firstName,
       lastName,
       role: "admin",
+      status: "active",
     };
 
     try {
