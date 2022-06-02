@@ -12,6 +12,7 @@ interface UserInfo {
   email: string;
   _id: string;
   role: string;
+  status: string;
 }
 
 const Usercards = () => {
@@ -78,6 +79,7 @@ const Usercards = () => {
                 lastName={user.lastName}
                 email={user.email}
                 image={user.image}
+                status={user.status}
               />
             ))}
       </div>

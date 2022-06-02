@@ -10,9 +10,17 @@ interface UserInfo {
   lastName: string;
   email: string;
   id: string;
+  status: string;
 }
 
-const CardUser = ({ firstName, lastName, email, image, id }: UserInfo) => {
+const CardUser = ({
+  firstName,
+  lastName,
+  email,
+  image,
+  id,
+  status,
+}: UserInfo) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
@@ -39,7 +47,13 @@ const CardUser = ({ firstName, lastName, email, image, id }: UserInfo) => {
         >
           X
         </button>
-        <div className="relative bg-gray-400 flex flex-col items-center justify-center rounded-lg pt-8 pb-4 ">
+        <div
+          className={
+            status === "active"
+              ? "bg-gray-400 relative flex flex-col items-center justify-center rounded-lg pt-8 pb-4"
+              : "bg-red-300 relative flex flex-col items-center justify-center rounded-lg pt-8 pb-4"
+          }
+        >
           {isOpen && (
             <div className="fixed inset-0 z-30 flex items-center justify-center">
               <div

@@ -19,6 +19,7 @@ interface IUser {
   gender: string;
   image: string;
   password: string;
+  status: string;
   borrowBook:
     | {
         bookId: string;
@@ -77,21 +78,29 @@ const UpdateUserInfo = ({ id }: IId) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!(await bcrypt.compare(oldPassword, String(user.password)))) {
-      toast.error("Old password is not correct");
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setMessage("password does not match");
-      return;
-    }
+    if (oldPassword === "" && newPassword === "" && confirmPassword === "") {
+      const res = await api.put(`api/v1/users/${id}`, user);
+      if (res.statusText === "OK") {
+        toast.success("User updated!");
+        navigate("/user_info");
+      }
+    } else {
+      if (!(await bcrypt.compare(oldPassword, String(user.password)))) {
+        toast.error("Old password is not correct");
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        setMessage("password does not match");
+        return;
+      }
 
-    setUser({ ...user, password: newPassword });
+      setUser({ ...user, password: newPassword });
 
-    const res = await api.put(`api/v1/users/${id}`, user);
-    if (res.statusText === "OK") {
-      toast.success("User updated!");
-      navigate("/user_info");
+      const res = await api.put(`api/v1/users/${id}`, user);
+      if (res.statusText === "OK") {
+        toast.success("User updated!");
+        navigate("/user_info");
+      }
     }
   };
 
@@ -103,6 +112,30 @@ const UpdateUserInfo = ({ id }: IId) => {
             <img src={user?.image} className="h-32 w-32 rounded-full" />
           </div>
           <form className="p-12 md:p-24" onSubmit={handleSubmit}>
+            <div
+              className="flex justify-end items-center space-x-4 mb-8"
+              onChange={handleInput}
+            >
+              <div className="flex justify-center items-center">
+                <input
+                  type="radio"
+                  value="active"
+                  name="status"
+                  checked={user?.status === "active"}
+                />
+
+                <p className=" text-green-500">&nbsp;Active</p>
+              </div>
+              <div className="flex justify-center items-center">
+                <input
+                  type="radio"
+                  value="disabled"
+                  name="status"
+                  checked={user?.status === "disabled"}
+                />
+                <p className=" text-red-500">&nbsp;Disabled</p>
+              </div>
+            </div>
             <div className="flex space-x-4 mb-8">
               <input
                 name="firstName"
@@ -140,7 +173,6 @@ const UpdateUserInfo = ({ id }: IId) => {
                 placeholder="Phone"
                 onChange={handleInput}
                 value={user?.phone || ""}
-                required
               />
             </div>
             <div className="flex space-x-4 mb-8">
@@ -156,7 +188,6 @@ const UpdateUserInfo = ({ id }: IId) => {
                 placeholder="Old Password"
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
-                required
               />
             </div>
             <div className="flex space-x-4 mb-8">
@@ -166,7 +197,6 @@ const UpdateUserInfo = ({ id }: IId) => {
                 placeholder="New Password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                required
               />
               <div className="w-1/2">
                 <input
@@ -178,7 +208,6 @@ const UpdateUserInfo = ({ id }: IId) => {
                     setConfirmPassword(e.target.value);
                     setMessage("");
                   }}
-                  required
                 />
                 {message && <p className="text-sm text-red-600">{message}</p>}
               </div>
