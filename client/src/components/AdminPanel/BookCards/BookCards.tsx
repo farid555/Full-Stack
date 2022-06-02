@@ -15,6 +15,7 @@ interface IBook {
 const BookCards = () => {
   const [loading, setLoading] = useState(true);
   const [books, setBooks] = useState<IBook[]>([]);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     const getBooks = async () => {
@@ -41,7 +42,11 @@ const BookCards = () => {
   return (
     <div className="container mx-auto">
       <div className="w-full mt-20 mb-10 flex items-center justify-center">
-        <SearchBar3 />
+        <SearchBar3
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          placeholder={"Search by book title"}
+        />
       </div>
       <div className="flex justify-end space-x-2">
         <Link to="/add_book">
@@ -52,15 +57,23 @@ const BookCards = () => {
       </div>
       <div className="grid grid-cols-4 gap-8 my-4">
         {books &&
-          books.map((book: IBook) => (
-            <Link to={`/books/${book._id}`} key={book._id}>
-              <SingleBook
-                image={book.image}
-                title={book.title}
-                author={book.author}
-              />
-            </Link>
-          ))}
+          books
+            .filter((book) => {
+              if (book.title === "") return book;
+              else if (
+                book.title.toLowerCase().includes(searchValue.toLowerCase())
+              )
+                return book;
+            })
+            .map((book: IBook) => (
+              <Link to={`/books/${book._id}`} key={book._id}>
+                <SingleBook
+                  image={book.image}
+                  title={book.title}
+                  author={book.author}
+                />
+              </Link>
+            ))}
       </div>
     </div>
   );

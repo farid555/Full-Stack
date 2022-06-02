@@ -10,6 +10,7 @@ export type UserDocument = Document & {
   gender: string
   image: string
   password: string
+  status: string
   borrowBook: {
     bookId: string
     getBorrow: Date
@@ -54,6 +55,10 @@ const bookSchema = new mongoose.Schema({
   image: {
     type: String,
     required: false,
+  },
+  status: {
+    type: String,
+    required: true,
   },
   borrowBook: [
     {

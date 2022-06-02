@@ -31,6 +31,7 @@ const FormAddUser = () => {
         password: await bcrypt.hash(password, 10),
         image,
         role: "user",
+        status: "active",
       };
       const res = await api.post("api/v1/users", newUser);
       console.log(res);

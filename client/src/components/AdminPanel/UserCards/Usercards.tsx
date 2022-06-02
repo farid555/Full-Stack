@@ -17,6 +17,7 @@ interface UserInfo {
 const Usercards = () => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<UserInfo[]>([]);
+  const [searchValue, setSearchValue] = useState("");
 
   console.log(users);
 
@@ -34,7 +35,11 @@ const Usercards = () => {
   return (
     <div className="container mx-auto">
       <div className="w-full mt-20 mb-10 flex items-center justify-center">
-        <SearchBar2 />
+        <SearchBar2
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          placeholder={"Search by name/email"}
+        />
       </div>
       <div className="flex justify-end space-x-2">
         <Link to="/admin/add_user">
@@ -51,16 +56,30 @@ const Usercards = () => {
         )}
         {!loading &&
           users &&
-          users.map((user) => (
-            <CardUser
-              key={user._id}
-              id={user._id}
-              firstName={user.firstName}
-              lastName={user.lastName}
-              email={user.email}
-              image={user.image}
-            />
-          ))}
+          users
+            .filter((user) => {
+              if (searchValue === "") return user;
+              else if (
+                user.firstName.toLowerCase().includes(searchValue.toLowerCase())
+              )
+                return user;
+              else if (
+                user.lastName.toLowerCase().includes(searchValue.toLowerCase())
+              )
+                return user;
+              else if (user.email.includes(searchValue.toLowerCase()))
+                return user;
+            })
+            .map((user) => (
+              <CardUser
+                key={user._id}
+                id={user._id}
+                firstName={user.firstName}
+                lastName={user.lastName}
+                email={user.email}
+                image={user.image}
+              />
+            ))}
       </div>
     </div>
   );

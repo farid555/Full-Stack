@@ -33,7 +33,10 @@ const LoginForm = () => {
       if (user?.role === "admin") {
         navigate("/admin");
       } else {
-        navigate("/");
+        if (user?.status === "active") navigate("/");
+        else {
+          toast.error("User account is not active!");
+        }
       }
     }
 
