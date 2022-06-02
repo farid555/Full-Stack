@@ -24,6 +24,7 @@ const FormAddAdmin = () => {
         address,
         image,
         role: "admin",
+        status: "active",
       };
       const res = await api.post("api/v1/users", newUser);
       console.log(res);
@@ -46,7 +47,7 @@ const FormAddAdmin = () => {
   };
 
   const handleFileInputChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (!e.target.files) return;
 
@@ -156,6 +157,5 @@ const FormAddAdmin = () => {
     </div>
   );
 };
-
 
 export default FormAddAdmin;

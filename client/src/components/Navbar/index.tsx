@@ -18,6 +18,7 @@ interface IUser {
   _id: string;
   email: string;
   token: string;
+  role: string;
 }
 
 interface IUserData {
@@ -37,7 +38,7 @@ function Navbar() {
   useEffect(() => {
     const getUserPhoto = async () => {
       const res: AxiosResponse<IUserData> = await api.get(
-        `api/v1/users/${user?._id}`,
+        `api/v1/users/${user?._id}`
       );
       const data: IUserData = res.data;
       setUserImage(data.image);
@@ -55,6 +56,13 @@ function Navbar() {
       <div className="w-10/12 flex justify-end items-center">
         <NavMenus />
         <SearchBar />
+        {user && user?.role === "admin" && (
+          <Link to="/admin">
+            <button className="bg-white rounded-md mx-4 text-black px-4 py-2">
+              Dashboard
+            </button>
+          </Link>
+        )}
         <div className="mx-4">
           {user ? (
             <img
