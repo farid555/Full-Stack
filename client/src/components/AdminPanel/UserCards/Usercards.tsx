@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import api from "../../../api";
 import SearchBar2 from "../SearchBar/SearchBar2";
 import CardUser from "./CardUser";
+import UserPagination from "./UserPagination";
 
-interface UserInfo {
+type UserInfo = {
   image: string;
   firstName: string;
   lastName: string;
@@ -13,25 +14,31 @@ interface UserInfo {
   _id: string;
   role: string;
   status: string;
+};
+
+interface IProps {
+  users: UserInfo[];
+  loading: boolean;
 }
 
-const Usercards = () => {
-  const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState<UserInfo[]>([]);
+const Usercards = ({ users, loading }: IProps) => {
   const [searchValue, setSearchValue] = useState("");
+  const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
+  const [usersPerPage, setUsersPage] = useState<number>(6);
+  const [pages, setPages] = useState<number[]>([]);
 
   console.log(users);
 
-  useEffect(() => {
-    const getUsersInfo = async () => {
-      const res: AxiosResponse<UserInfo[]> = await api.get("api/v1/users");
-      const data: UserInfo[] = res.data;
-      // console.log(data);
-      setUsers(data.filter((user) => user.role !== "admin"));
-      setLoading(false);
-    };
-    getUsersInfo();
-  }, []);
+  const indexOfLastUserOfThePage = currentPageNumber * usersPerPage;
+  const indexOfFirstUserOfThePage = indexOfLastUserOfThePage - usersPerPage;
+  const usersOfCurrentPage = users.slice(
+    indexOfFirstUserOfThePage,
+    indexOfLastUserOfThePage
+  );
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPageNumber(pageNumber);
+  };
 
   return (
     <div className="container mx-auto">
@@ -50,14 +57,12 @@ const Usercards = () => {
         </Link>
       </div>
       <div className="grid grid-cols-6 gap-8 my-4">
-        {loading && (
+        {loading ? (
           <div className="flex items-center justify-center">
             <p>Loading...</p>
           </div>
-        )}
-        {!loading &&
-          users &&
-          users
+        ) : (
+          usersOfCurrentPage
             .filter((user) => {
               if (searchValue === "") return user;
               else if (
@@ -81,8 +86,19 @@ const Usercards = () => {
                 image={user.image}
                 status={user.status}
               />
-            ))}
+            ))
+        )}
       </div>
+      {users && (
+        <UserPagination
+          totalUsers={users.length}
+          usersPerPage={usersPerPage}
+          paginate={paginate}
+          indexOfFirstUserOfThePage={indexOfFirstUserOfThePage}
+          indexOfLastUserOfThePage={indexOfLastUserOfThePage}
+          currentPageNumber={currentPageNumber}
+        />
+      )}
     </div>
   );
 };

@@ -43,7 +43,7 @@ const CardUser = ({
       <div className="relative">
         <button
           onClick={handleOpen}
-          className="absolute top-1 right-2 text-black z-50 hover:text-red-600 cursor-pointer"
+          className="absolute top-1 right-2 text-black z-30 hover:text-red-600 cursor-pointer"
         >
           X
         </button>
@@ -55,7 +55,7 @@ const CardUser = ({
           }
         >
           {isOpen && (
-            <div className="fixed inset-0 z-30 flex items-center justify-center">
+            <div className="fixed inset-0 z-40 flex items-center justify-center">
               <div
                 className="fixed inset-0 z-40"
                 style={{ backgroundColor: "rgba(0,0,0,0.3)" }}
@@ -106,7 +106,7 @@ const CardUser = ({
               onClick={() => navigate(`/edit/user/${id}`)}
               className=" cursor-pointer text-center text-sm text-white hover:text-blue-600"
             >
-              {email}
+              {email.length > 22 ? `${email.slice(0, 21)}...` : email}
             </p>
           </div>
         </div>

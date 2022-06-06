@@ -77,7 +77,7 @@ export const findById = async (
   }
 }
 
-// GET /movies
+// GET /books
 export const findAll = async (
   req: Request,
   res: Response,
@@ -89,6 +89,10 @@ export const findAll = async (
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
     } else {
+      res.status(500).json({
+        message: 'Could not get books',
+        error: error,
+      })
       next(error)
     }
   }

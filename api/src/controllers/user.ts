@@ -19,6 +19,10 @@ export const createUser = async (
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
     } else {
+      res.status(500).json({
+        message: 'User creation Failed',
+        error: error,
+      })
       next(error)
     }
   }
