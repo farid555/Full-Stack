@@ -32,7 +32,7 @@ function Install() {
       navigate("/login");
       console.log(res);
     } catch (e: any) {
-      toast.error(e);
+      toast.error(e.response.data.message);
       console.log(e);
     }
   };
