@@ -25,26 +25,18 @@ const UserPagination = ({
     <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
       <div className="flex-1 flex justify-between sm:hidden">
         <a
-          onClick={() =>
-            paginate(
-              currentPageNumber - 1 === 0
-                ? Math.ceil(totalUsers / usersPerPage)
-                : currentPageNumber - 1
-            )
-          }
-          className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          onClick={() => paginate(currentPageNumber - 1)}
+          className={`${
+            currentPageNumber === 1 ? "hidden" : "relative"
+          }relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50`}
         >
           Previous
         </a>
         <a
-          onClick={() =>
-            paginate(
-              currentPageNumber + 1 === Math.ceil(totalUsers / usersPerPage) + 1
-                ? 1
-                : currentPageNumber + 1
-            )
-          }
-          className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          onClick={() => paginate(currentPageNumber + 1)}
+          className={`${
+            currentPageNumber === pageNo.length ? "hidden" : "relative"
+          } ml-3 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50`}
         >
           Next
         </a>
@@ -72,7 +64,9 @@ const UserPagination = ({
           >
             <a
               onClick={() => paginate(currentPageNumber - 1)}
-              className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              className={`${
+                currentPageNumber === 1 ? "hidden" : "relative"
+              } inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50`}
             >
               <span className="sr-only">Previous</span>
               <svg
@@ -91,8 +85,9 @@ const UserPagination = ({
             </a>
 
             {pageNo &&
-              pageNo.map((page) => (
+              pageNo.map((page, idx) => (
                 <a
+                  key={idx}
                   onClick={() => paginate(page)}
                   aria-current="page"
                   className={` z-10 relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
@@ -108,7 +103,9 @@ const UserPagination = ({
 
             <a
               onClick={() => paginate(currentPageNumber + 1)}
-              className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              className={`${
+                currentPageNumber === pageNo.length ? "hidden" : "relative"
+              }  inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50`}
             >
               <span className="sr-only">Next</span>
               <svg

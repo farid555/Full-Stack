@@ -126,6 +126,7 @@ export const loginUser = async (
     } else {
       res.status(400)
       throw new BadRequestError('Invalid Request')
+      next()
     }
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
@@ -147,20 +148,29 @@ export const loginUserWithPassword = async (
     if (!email || !password) {
       res.status(400)
       throw new BadRequestError('Invalid Request')
+      next()
     }
 
     const user = await UserService.findByEmail(email)
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      res.json({
-        _id: user._id,
-        email: user.email,
-        token: await UserService.generateToken(user._id),
-        role: user.role,
-      })
+      if (user.status === 'active') {
+        res.json({
+          _id: user._id,
+          email: user.email,
+          token: await UserService.generateToken(user._id),
+          role: user.role,
+        })
+        next()
+      } else {
+        res.status(400)
+        throw new BadRequestError('User not found')
+        next()
+      }
     } else {
       res.status(400)
       throw new BadRequestError('Invalid Request')
+      next()
     }
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {

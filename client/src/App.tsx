@@ -19,6 +19,7 @@ import AddAdmin from "./pages/AddAdmin";
 import Install from "./pages/Install";
 import Error404 from "./pages/Error404";
 import UpdateUser from "./pages/UpdateUser";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/books/:bookId" element={<BookDetails />} />
           <Route path="/book_list" element={<BookList />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/user_profile" element={<UserProfile />} />
           <Route path="/add_admin" element={<AddAdmin />} />
           <Route element={<PrivateRouteAdmin />}>

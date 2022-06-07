@@ -5,7 +5,12 @@ import bcrypt from "bcryptjs";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const FormAddUser = () => {
+interface IProps {
+  title: string;
+  status: string;
+}
+
+const FormAddUser = ({ title, status }: IProps) => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [gender, setGender] = useState<string>("");
@@ -31,12 +36,17 @@ const FormAddUser = () => {
         password: await bcrypt.hash(password, 10),
         image,
         role: "user",
-        status: "active",
+        status: status,
       };
       const res = await api.post("api/v1/users", newUser);
       console.log(res);
-      toast.success("User Added!");
-      navigate("/admin");
+      if (status === "active") {
+        toast.success("User Added!");
+        navigate("/admin");
+      } else {
+        toast.success("Waiting for getting permission!");
+        navigate("/login");
+      }
 
       // setUserAdded(true);
     } catch (err: any) {
@@ -79,6 +89,7 @@ const FormAddUser = () => {
 
   return (
     <div className="w-full bg-green-300 py-20">
+      <h1 className="text-center font-title text-6xl my-10">{title}</h1>
       <div className="container mx-auto">
         {userAdded ? (
           <AddedUser
@@ -124,7 +135,7 @@ const FormAddUser = () => {
               />
 
               <input
-                type="text"
+                type="password"
                 className="bg-gray-200 text-black text-lg my-4 px-6 py-4 rounded-md outline-none w-1/2"
                 placeholder={"Password"}
                 value={password}
@@ -159,7 +170,7 @@ const FormAddUser = () => {
                   type="submit"
                   className="bg-green-600 px-2 py-3 w-32 text-white rounded-md mx-5"
                 >
-                  Add new user
+                  {title}
                 </button>
                 <button
                   type="reset"

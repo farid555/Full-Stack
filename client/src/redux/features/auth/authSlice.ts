@@ -33,7 +33,7 @@ export const loginWithPassword = createAsyncThunk(
   "auth/login2",
   async (user: IUserPasswordData, thunkAPI) => {
     try {
-      return await authService.login(user);
+      return await authService.loginWithPassword(user);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

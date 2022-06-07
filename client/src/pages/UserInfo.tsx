@@ -19,6 +19,7 @@ interface UserInfo {
 const UserInfo = () => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<UserInfo[]>([]);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -42,7 +43,24 @@ const UserInfo = () => {
         <AdminHero />
       </section>
       <section>
-        <Usercards users={users} loading={loading} />
+        <Usercards
+          users={users.filter((user) => {
+            if (searchValue === "") return user;
+            else if (
+              user.firstName.toLowerCase().includes(searchValue.toLowerCase())
+            )
+              return user;
+            else if (
+              user.lastName.toLowerCase().includes(searchValue.toLowerCase())
+            )
+              return user;
+            else if (user.email.includes(searchValue.toLowerCase()))
+              return user;
+          })}
+          loading={loading}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+        />
       </section>
       <footer>
         <Footer />

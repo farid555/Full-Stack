@@ -19,10 +19,11 @@ type UserInfo = {
 interface IProps {
   users: UserInfo[];
   loading: boolean;
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Usercards = ({ users, loading }: IProps) => {
-  const [searchValue, setSearchValue] = useState("");
+const Usercards = ({ users, loading, searchValue, setSearchValue }: IProps) => {
   const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
   const [usersPerPage, setUsersPage] = useState<number>(6);
   const [pages, setPages] = useState<number[]>([]);
@@ -49,7 +50,12 @@ const Usercards = ({ users, loading }: IProps) => {
           placeholder={"Search by name/email"}
         />
       </div>
-      <div className="flex justify-end space-x-2">
+      <div className="flex justify-between space-x-2">
+        <Link to="/admin">
+          <button className="bg-gray-600 px-2 py-3 rounded-md text-white text-base">
+            Back
+          </button>
+        </Link>
         <Link to="/admin/add_user">
           <button className="bg-green-600 px-2 py-3 rounded-md text-white text-base">
             Add new user
@@ -62,34 +68,20 @@ const Usercards = ({ users, loading }: IProps) => {
             <p>Loading...</p>
           </div>
         ) : (
-          usersOfCurrentPage
-            .filter((user) => {
-              if (searchValue === "") return user;
-              else if (
-                user.firstName.toLowerCase().includes(searchValue.toLowerCase())
-              )
-                return user;
-              else if (
-                user.lastName.toLowerCase().includes(searchValue.toLowerCase())
-              )
-                return user;
-              else if (user.email.includes(searchValue.toLowerCase()))
-                return user;
-            })
-            .map((user) => (
-              <CardUser
-                key={user._id}
-                id={user._id}
-                firstName={user.firstName}
-                lastName={user.lastName}
-                email={user.email}
-                image={user.image}
-                status={user.status}
-              />
-            ))
+          usersOfCurrentPage.map((user) => (
+            <CardUser
+              key={user._id}
+              id={user._id}
+              firstName={user.firstName}
+              lastName={user.lastName}
+              email={user.email}
+              image={user.image}
+              status={user.status}
+            />
+          ))
         )}
       </div>
-      {users && (
+      {!loading && users && (
         <UserPagination
           totalUsers={users.length}
           usersPerPage={usersPerPage}

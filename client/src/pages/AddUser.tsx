@@ -9,7 +9,7 @@ const AddUser = () => {
     <>
       <Navbar />
       <AdminHero />
-      <FormAddUser />
+      <FormAddUser title={"Add new user"} status={"active"} />
       <Footer />
     </>
   );

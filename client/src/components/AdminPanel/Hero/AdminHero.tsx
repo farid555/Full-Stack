@@ -17,9 +17,11 @@ const AdminHero = () => {
               </h1>
             </div>
             <div className="flex justify-center align-center items-center space-x-8 ">
-              <button className="rounded-full hover:scale-125 text-xl bg-violet-700 px-6 py-4 hover:bg-violet-600 duration-400 transition-all ease-in-out text-white">
-                Dashboard
-              </button>
+              <Link to="/admin">
+                <button className="rounded-full hover:scale-125 text-xl bg-violet-700 px-6 py-4 hover:bg-violet-600 duration-400 transition-all ease-in-out text-white">
+                  Dashboard
+                </button>
+              </Link>
               <Link to="/book_info">
                 <button className="rounded-full hover:scale-125 text-xl bg-violet-700 px-6 py-4 hover:bg-violet-600 duration-400 transition-all ease-in-out text-white">
                   Book Information

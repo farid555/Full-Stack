@@ -36,14 +36,16 @@ function Navbar() {
   const { user }: IState = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    const getUserPhoto = async () => {
-      const res: AxiosResponse<IUserData> = await api.get(
-        `api/v1/users/${user?._id}`
-      );
-      const data: IUserData = res.data;
-      setUserImage(data.image);
-    };
-    getUserPhoto();
+    if (user) {
+      const getUserPhoto = async () => {
+        const res: AxiosResponse<IUserData> = await api.get(
+          `api/v1/users/${user?._id}`
+        );
+        const data: IUserData = res.data;
+        setUserImage(data.image);
+      };
+      getUserPhoto();
+    }
   }, [user]);
 
   return (

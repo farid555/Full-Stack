@@ -4,6 +4,7 @@ import GoogleLogin, {
   GoogleLoginResponseOffline,
 } from "react-google-login";
 import { FaLock, FaRegUserCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -26,7 +27,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error(message);
+      toast.error("Test");
     }
 
     if (isSuccess || user) {
@@ -49,7 +50,7 @@ const LoginForm = () => {
     let result;
     if ("profileObj" in res) {
       result = res.profileObj;
-      dispatch(login(result));
+      await dispatch(login(result));
     }
   };
 
@@ -60,7 +61,7 @@ const LoginForm = () => {
       return;
     }
     try {
-      dispatch(loginWithPassword({ email, password }));
+      await dispatch(loginWithPassword({ email, password }));
     } catch (err) {
       console.log(err);
     }
@@ -115,6 +116,7 @@ const LoginForm = () => {
             Login
           </button>
         </form>
+
         <GoogleLogin
           clientId={String(process.env.REACT_APP_GOOGLE_CLIENT_ID)}
           buttonText="Login with Google"
@@ -124,6 +126,14 @@ const LoginForm = () => {
           }}
           cookiePolicy={"single_host_origin"}
         />
+
+        <div className="my-6">
+          <Link to="/register">
+            <p className="cursor-pointer text-red-400 underline underline-offset-8">
+              If you're new, please register here
+            </p>
+          </Link>
+        </div>
       </div>
     </div>
   );
