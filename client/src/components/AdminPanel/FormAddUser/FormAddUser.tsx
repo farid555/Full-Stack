@@ -36,7 +36,7 @@ const FormAddUser = ({ title, status }: IProps) => {
         password: await bcrypt.hash(password, 10),
         image,
         role: "user",
-        status: status,
+        status: "disabled",
       };
       const res = await api.post("api/v1/users", newUser);
       console.log(res);

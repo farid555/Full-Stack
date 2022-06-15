@@ -122,6 +122,7 @@ export const loginUser = async (
         email: user.email,
         token: await UserService.generateToken(user._id),
         role: user.role,
+        status: user.status,
       })
     } else {
       res.status(400)
@@ -160,6 +161,7 @@ export const loginUserWithPassword = async (
           email: user.email,
           token: await UserService.generateToken(user._id),
           role: user.role,
+          status: user.status,
         })
         next()
       } else {

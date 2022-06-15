@@ -27,13 +27,14 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Test");
+      toast.error("User is disabled or Username/Password is incorrect");
     }
 
     if (isSuccess || user) {
       if (user?.role === "admin") {
         navigate("/admin");
       } else {
+        console.log(user?.status);
         if (user?.status === "active") navigate("/");
         else {
           toast.error("User account is not active!");
