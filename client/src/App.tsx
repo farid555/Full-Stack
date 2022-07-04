@@ -20,6 +20,7 @@ import Install from "./pages/Install";
 import Error404 from "./pages/Error404";
 import UpdateUser from "./pages/UpdateUser";
 import Register from "./pages/Register";
+import UpdateUserProfile from "./pages/UpdateUserProfile";
 
 function App() {
   return (
@@ -42,6 +43,9 @@ function App() {
             <Route path="/user_info" element={<UserInfo />} />
             <Route path="/book_info" element={<BookInfo />} />
             <Route path="/edit/user/:userId" element={<UpdateUser />} />
+          </Route>
+          <Route element={<PrivateRouteUser />}>
+            <Route path="/update_profile" element={<UpdateUserProfile />} />
           </Route>
           <Route path="*" element={<Error404 />} />
         </Routes>

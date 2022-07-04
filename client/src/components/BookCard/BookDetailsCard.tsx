@@ -64,7 +64,7 @@ const BookDetailsCard = ({ bookId }: IId) => {
     const getBookInfo = async () => {
       try {
         const res: AxiosResponse<IBook> = await api.get(
-          `api/v1/books/${bookId}`,
+          `api/v1/books/${bookId}`
         );
         const data: IBook = res.data;
         setBook(data);
@@ -80,7 +80,7 @@ const BookDetailsCard = ({ bookId }: IId) => {
     try {
       author.forEach(async (obj: string) => {
         const res: AxiosResponse<IAuthor> = await api.get(
-          `api/v1/authors/${obj}`,
+          `api/v1/authors/${obj}`
         );
         //console.log("res:", res);
 
@@ -97,7 +97,7 @@ const BookDetailsCard = ({ bookId }: IId) => {
   const handleBorrow = async () => {
     try {
       const res: AxiosResponse<IUserModel> = await api.get(
-        `api/v1/users/${user?._id}`,
+        `api/v1/users/${user?._id}`
       );
       const data: IUserModel = await res.data;
       await setUserInfo(data);
@@ -125,7 +125,7 @@ const BookDetailsCard = ({ bookId }: IId) => {
     };
     const res2: AxiosResponse<IUserModel> = await api.put(
       `api/v1/users/${user?._id}`,
-      newUser,
+      newUser
     );
     console.log(res2.data);
     toast.success("Book borrowed successfully");
@@ -134,30 +134,48 @@ const BookDetailsCard = ({ bookId }: IId) => {
 
   return (
     <div className="container mx-auto flex justify-center items-center h-screen">
-      <div className="bg-gray-200 px-14 py-12 flex space-x-10 items-center w-1/2">
+      <div className="border rounded shadow-md px-14 py-12 flex flex-col space-y-10 items-center w-1/2">
         {book && (
           <>
             <div className="w-1/4">
               <img src={book.image} className="h-32 w-32" alt="book logo" />
             </div>
-            <div className="px-10 py-4 bg-red-100 w-3/4">
-              <p>Title: {book.title}</p>
+            <div className="px-10 py-4 border w-3/4 leading-loose">
               <p>
-                Author:&nbsp;
+                <span className="font-semibold">Title:</span> {book.title}
+              </p>
+              <p>
+                <span className="font-semibold">Author</span>:&nbsp;
                 {authors.map(
-                  (author) => `${author.firstName} ${author.lastName}, `,
+                  (author) => `${author.firstName} ${author.lastName}, `
                 )}
               </p>
               <p>
-                Genres:&nbsp;
+                <span className="font-semibold">Genres</span>:&nbsp;
                 {book.genres.map((genre) => `${genre}, `)}
               </p>
-              <p>Published year: {book.publishedYear}</p>
-              <p>Rating: {book.rating}</p>
-              <p>Pages: {book.pages}</p>
-              <p>In stock: {book.quantity}</p>
+              <p>
+                <span className="font-semibold">Published year:</span>&nbsp;
+                {book.publishedYear}
+              </p>
+              <p>
+                <span className="font-semibold">Rating:</span>&nbsp;
+                {book.rating}
+              </p>
+              <p>
+                <span className="font-semibold">Pages:</span>&nbsp;{book.pages}
+              </p>
+              <p>
+                <span className="font-semibold">In stock:</span>&nbsp;
+                {book.quantity}
+              </p>
             </div>
-            <button onClick={handleBorrow}>Borrow Book</button>
+            <button
+              className="px-6 py-3 bg-cyan-400 rounded text-white"
+              onClick={handleBorrow}
+            >
+              Borrow Book
+            </button>
           </>
         )}
       </div>

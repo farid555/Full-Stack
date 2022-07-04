@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import api from "../../api";
 import { AxiosResponse } from "axios";
+import { logout } from "../../redux/features/auth/authSlice";
 
 interface IState {
   user: IUser | null;
@@ -33,7 +34,9 @@ interface IUserData {
 
 function Navbar() {
   const [userImage, setUserImage] = useState("");
+  const [showMenu, setShowMenu] = useState(false);
   const { user }: IState = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (user) {
@@ -47,6 +50,8 @@ function Navbar() {
       getUserPhoto();
     }
   }, [user]);
+
+  console.log(showMenu);
 
   return (
     <nav className="z-50 bg-black w-full fixed top-0 left-0 flex justify-between items-center flex-row py-5 px-10">
@@ -65,13 +70,30 @@ function Navbar() {
             </button>
           </Link>
         )}
+
         <div className="mx-4">
           {user ? (
-            <img
-              src={userImage}
-              alt="user"
-              className="h-10 w-10 rounded-full"
-            />
+            <div className="relative">
+              <img
+                src={userImage}
+                alt="user"
+                className="h-10 w-10 rounded-full"
+                onClick={() => setShowMenu((prev) => !prev)}
+              />
+              {showMenu && (
+                <div className="absolute -bottom-20 right-2 w-48 bg-white">
+                  <div className="cursor-pointer px-4 py-2 hover:bg-gray-200">
+                    <Link to="/update_profile">Update Profile</Link>
+                  </div>
+                  <div
+                    className="cursor-pointer px-4 py-2 hover:bg-gray-200"
+                    onClick={() => dispatch(logout())}
+                  >
+                    Log out
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <ProfileIcon />
           )}
