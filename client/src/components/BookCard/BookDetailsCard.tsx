@@ -1,22 +1,13 @@
 import { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
 import api from "../../api";
-import { useAppSelector } from "../../hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { toast } from "react-toastify";
+import { getBookInfoById } from "../../redux/features/book/bookSlice";
+import { addBook } from "../../redux/features/cart/cartSlice";
 
 interface IId {
   bookId: string | undefined;
-}
-
-interface IBook {
-  title: string;
-  publishedYear: number;
-  genres: string[];
-  pages: number;
-  rating: number;
-  quantity: number;
-  image: string;
-  author: string[];
 }
 
 interface IUserModel {
@@ -40,13 +31,31 @@ interface IAuthor {
   lastName: string;
 }
 
-interface IState {
+interface IStateUser {
   user: IUser | null;
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
   message: string;
 }
+
+interface IBook {
+  title: string;
+  publishedYear: number;
+  genres: string[];
+  pages: number;
+  rating: number;
+  quantity: number;
+  image: string;
+  author: string[];
+  userBorrowBook: string[];
+}
+
+interface IStateBook {
+  books: [IBook] | null;
+  book: IBook | null;
+}
+
 interface IUser {
   _id: string;
   email: string;
@@ -54,26 +63,18 @@ interface IUser {
 }
 
 const BookDetailsCard = ({ bookId }: IId) => {
-  const [book, setBook] = useState<IBook>();
   const [authors, setAuthors] = useState<IAuthor[]>([]);
   const [userInfo, setUserInfo] = useState<IUserModel>();
+  const [borrowed, setBorrowed] = useState<boolean>(false);
 
-  const { user }: IState = useAppSelector((state) => state.auth);
+  const { user }: IStateUser = useAppSelector((state) => state.auth);
+  const { book }: IStateBook = useAppSelector((state) => state.book);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const getBookInfo = async () => {
-      try {
-        const res: AxiosResponse<IBook> = await api.get(
-          `api/v1/books/${bookId}`
-        );
-        const data: IBook = res.data;
-        setBook(data);
-        getAuthorName(data.author);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getBookInfo();
+    if (bookId) {
+      dispatch(getBookInfoById(bookId));
+    }
   }, [bookId]);
 
   const getAuthorName = async (author: string[]) => {
@@ -95,42 +96,9 @@ const BookDetailsCard = ({ bookId }: IId) => {
   };
 
   const handleBorrow = async () => {
-    try {
-      const res: AxiosResponse<IUserModel> = await api.get(
-        `api/v1/users/${user?._id}`
-      );
-      const data: IUserModel = await res.data;
-      await setUserInfo(data);
-      await updateUser(data);
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(addBook(book));
+    setBorrowed(true);
   };
-
-  const updateUser = async (data: IUserModel) => {
-    const issueDate = new Date();
-    const returnDate = new Date();
-    returnDate.setDate(returnDate.getDate() + 15);
-    const getBorrow = issueDate.toISOString().split("T")[0];
-    const returnBook = returnDate.toISOString().split("T")[0];
-    const newUser = {
-      ...data,
-      borrowBook: data?.borrowBook.concat([
-        {
-          bookId,
-          getBorrow,
-          returnBook,
-        },
-      ]),
-    };
-    const res2: AxiosResponse<IUserModel> = await api.put(
-      `api/v1/users/${user?._id}`,
-      newUser
-    );
-    console.log(res2.data);
-    toast.success("Book borrowed successfully");
-  };
-  //console.log(userInfo);
 
   return (
     <div className="container mx-auto flex justify-center items-center h-screen">
@@ -170,9 +138,11 @@ const BookDetailsCard = ({ bookId }: IId) => {
                 {book.quantity}
               </p>
             </div>
+
             <button
-              className="px-6 py-3 bg-cyan-400 rounded text-white"
+              className="disabled:opacity-50 px-6 py-3 bg-cyan-400 rounded text-white"
               onClick={handleBorrow}
+              disabled={book.quantity < 1 || borrowed ? true : false}
             >
               Borrow Book
             </button>

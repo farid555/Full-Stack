@@ -9,7 +9,8 @@ export type BookDocument = Document & {
   rating: number
   quantity: number
   image: string
-  authorId: string[]
+  author: string[]
+  userBorrowBook: string[]
 }
 
 const bookSchema = new mongoose.Schema({

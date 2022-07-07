@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import api from "../../api";
 import { AxiosResponse } from "axios";
 import { logout } from "../../redux/features/auth/authSlice";
+import NavCart from "./NavCart";
 
 interface IState {
   user: IUser | null;
@@ -60,9 +61,10 @@ function Navbar() {
           <h1 className="text-white text-xl font-bold">BookStore</h1>
         </Link>
       </div>
-      <div className="w-10/12 flex justify-end items-center">
+      <div className="w-10/12 flex justify-end items-center space-x-6">
         <NavMenus />
         <SearchBar />
+        <NavCart />
         {user && user?.role === "admin" && (
           <Link to="/admin">
             <button className="bg-white rounded-md mx-4 text-black px-4 py-2">
